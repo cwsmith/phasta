@@ -1181,6 +1181,13 @@ c
         do i=1,ierrsmooth
             call errsmooth( rerr, x, iper, ilwork, shp, shgl, iBC )
         end do
+        dxold = 0.001
+        rerr(:,6)=dxold
+        if(myrank.eq.master) write(*,*) 'hardcoded overwrite of rerr(:,6) to set size field'
+        where (abs(yold(:,2)).gt.0.06)
+          rerr(:,6)=dxold/two
+        endwhere
+
 
 !MR CHANGE
         if (numpe > 1) call MPI_BARRIER(MPI_COMM_WORLD, ierr)
